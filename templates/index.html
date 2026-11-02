@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homiq | House Price Estimator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-mark">⌂</span> homiq<span class="dot">.</span></a>
+  <nav><a href="#estimator">Price estimator</a><a href="#how-it-works">How it works</a><a href="#about">About</a></nav>
+  <a class="nav-cta" href="#estimator">Estimate a home <span>↗</span></a>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="pulse"></span> SMART PROPERTY ESTIMATOR</div>
+      <h1>Find the value<br>behind <em>every</em> home.</h1>
+      <p class="hero-text">A simple way to explore an estimated property price. Add a few details about a home and let our machine-learning model do the number crunching.</p>
+      <a class="primary-btn" href="#estimator">Estimate a property <span>↓</span></a>
+      <div class="trust-line"><span class="avatars">● ● ●</span> Built with machine learning <b>·</b> Made for India</div>
+    </div>
+    <div class="hero-art">
+      <div class="sun"></div><div class="art-label">A clearer view of property value</div>
+      <div class="house-scene">
+        <div class="back-building"></div><div class="house">
+          <div class="roof"></div><div class="house-body"><div class="window w1"></div><div class="window w2"></div><div class="door"></div></div>
+        </div><div class="tree tree1"></div><div class="tree tree2"></div><div class="ground"></div>
+      </div>
+      <div class="floating-card"><span class="mini-icon">↗</span><div><small>YOUR NEXT STEP</small><strong>Know before you decide</strong></div></div>
+    </div>
+  </section>
+
+  <section class="estimator-section" id="estimator">
+    <div class="section-heading"><div><div class="eyebrow dark">THE ESTIMATOR</div><h2>Let's price your property.</h2><p>Tell us a little about the home. We’ll calculate an indicative estimate.</p></div><div class="step-tag">01 <span>/</span> PROPERTY DETAILS</div></div>
+    <div class="estimator-grid">
+      <form id="predict-form" class="form-card">
+        <div class="form-top"><div><h3>Property details</h3><p>All fields are required for the estimate.</p></div><span class="home-icon">⌂</span></div>
+        <label class="full">Location<select name="location" required>{% for location in locations %}<option value="{{ location }}">{{ location }}</option>{% endfor %}</select></label>
+        <div class="field-grid">
+          <label>Built-up area <span class="unit">SQ. FT.</span><input type="number" name="area_sqft" min="300" max="10000" value="1200" required></label>
+          <label>Bedrooms <span class="unit">BHK</span><select name="bhk">{% for n in range(1,7) %}<option value="{{n}}" {% if n==2 %}selected{% endif %}>{{n}} BHK</option>{% endfor %}</select></label>
+          <label>Bathrooms<select name="bathrooms">{% for n in range(1,8) %}<option value="{{n}}" {% if n==2 %}selected{% endif %}>{{n}}</option>{% endfor %}</select></label>
+          <label>Property age <span class="unit">YEARS</span><input type="number" name="property_age_years" min="0" max="100" value="5" required></label>
+          <label>Floor number<input type="number" name="floor" min="0" max="60" value="3" required></label>
+          <label>Parking spaces<select name="parking"><option value="0">No parking</option><option value="1" selected>1 space</option><option value="2">2 spaces</option></select></label>
+        </div>
+        <button class="submit-btn" id="submit-btn" type="submit">Calculate estimated price <span>↗</span></button>
+        <p class="form-note"><span>✦</span> Your details are used only to calculate this estimate in this demo.</p>
+      </form>
+      <aside class="result-card" id="result-card">
+        <div class="result-top"><span class="result-icon">✳</span><span class="result-status">READY WHEN YOU ARE</span></div>
+        <div class="result-content" id="result-content">
+          <div class="result-kicker">YOUR ESTIMATED PROPERTY VALUE</div>
+          <div class="placeholder-value">₹ <span>— —</span></div>
+          <p class="result-description">Your estimate will appear here after you enter the property details.</p>
+          <div class="result-divider"></div>
+          <div class="result-foot"><span>Powered by</span><strong>Random Forest ML</strong></div>
+        </div>
+        <div class="result-bottom"><span class="spark">✧</span> A helpful starting point for your research.</div>
+      </aside>
+    </div>
+    <p class="disclaimer">Demo notice: this model was trained on synthetic sample data for demonstrating the machine-learning workflow. Its estimates are not real market valuations and should not be used for buying, selling, lending or investment decisions.</p>
+  </section>
+
+  <section class="how-section" id="how-it-works">
+    <div class="eyebrow dark">A SIMPLE PROCESS</div><h2>From details to an estimate.</h2>
+    <div class="steps">
+      <article><span>01</span><div class="step-icon">⌂</div><h3>Share the details</h3><p>Enter the location, size, rooms, age and parking details of the property.</p></article>
+      <article><span>02</span><div class="step-icon">⌘</div><h3>Model gets to work</h3><p>The trained Random Forest model analyses the property features.</p></article>
+      <article><span>03</span><div class="step-icon">₹</div><h3>See the estimate</h3><p>Get an indicative price in lakh and crore, right on the page.</p></article>
+    </div>
+  </section>
+
+  <section class="about-strip" id="about"><div><div class="eyebrow">UNDER THE HOOD</div><h2>Machine learning, made approachable.</h2><p>This academic demo uses Python, Pandas and Scikit-learn with a Random Forest Regression model, served through Flask.</p></div><div class="tech-list"><span>PYTHON</span><span>SCIKIT-LEARN</span><span>FLASK</span><span>HTML + CSS</span></div></section>
+</main>
+<footer><a class="brand" href="#"><span class="brand-mark">⌂</span> homiq<span class="dot">.</span></a><span>Property estimates, made a little simpler.</span><span>Academic demo project</span></footer>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body></html>
